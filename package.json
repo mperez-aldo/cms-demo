@@ -1,0 +1,28 @@
+{
+  "name": "cms-demo",
+  "version": "1.0.0",
+  "description": "CMS demo application using contentful",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mperez-aldo/cms-demo.git"
+  },
+  "keywords": [
+    "contentful"
+  ],
+  "author": "mperez-aldo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mperez-aldo/cms-demo/issues"
+  },
+  "homepage": "https://github.com/mperez-aldo/cms-demo#readme",
+  "dependencies": {
+    "contentful": "^5.0.5",
+    "contentful-extension-cli": "^2.0.0",
+    "cross-env": "^5.1.1",
+    "express": "^4.16.2"
+  }
+}

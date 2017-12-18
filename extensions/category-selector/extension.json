@@ -1,0 +1,6 @@
+{
+  "name": "Category selector",
+  "id": "cf-contentful-ui-category-selector",
+  "fieldTypes": ["Object"],
+  "srcdoc": "./index.html"
+}

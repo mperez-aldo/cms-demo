@@ -1,0 +1,6 @@
+{
+  "name": "Top story module",
+  "id": "cf-contentful-ui-top-story-module",
+  "fieldTypes": ["Object"],
+  "srcdoc": "./index.html"
+}

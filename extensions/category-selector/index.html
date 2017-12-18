@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>UI-Extension Categories</title>
+    <!-- load Contentful stylesheet to have some base styles -->
+    <link rel="stylesheet" href="https://contentful.github.io/ui-extensions-sdk/cf-extension.css">
+    <!-- load Contentful extensions SDK -->
+    <script src="https://contentful.github.io/ui-extensions-sdk/cf-extension-api.js"></script>
+    <style>
+      .grid{
+
+      }
+      .grid .col-1-2{
+        width: 50%;
+        position:relative;
+        float:left;
+      }
+      span{
+        width:100%;
+        position:relative;
+        float:left;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      let extensionRef = window.contentfulExtension || window.contentfulWidget;      
+      fetchCategories();
+      /* get the features products from OCC */
+      function fetchCategories(){        
+        let url = encodeURI("https://www.callitspring.com/aldowebservices/v2/caAldo/catalogs/caAldoProductCatalog/Online?format=json&pageSize=5");
+        const options = {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        };
+        fetch(url)
+        .then((resp) => resp.json())
+        .then(function(data) {
+          console.log(data);
+          let categoriesDropDown = document.getElementById('category');
+          // Examine the text in the response
+          data.categories[0].subcategories.forEach(function(category){
+            let opt = document.createElement('option');
+            opt.id = category.id;
+            opt.value = category.name;
+            opt.innerHTML = category.url;
+            categoriesDropDown.appendChild(opt);
+          });
+        })
+        .catch(function(err) {
+          console.log('Fetch Error', err);
+        });
+      }      
+      // initialize the Contentful extension, using the UI extensions SDK
+      window.contentfulExtension.init(extension => {
+        const value = extension.field.getValue();
+        let categoriesDropDown = document.getElementById('category');
+        /* init categories */        
+        if(value && value.category){
+          console.log("loading JSON - " + JSON.stringify(value.category));
+          categoriesDropDown.value = value.category.name;
+        }        
+        // send changes to the Contentful web app
+        categoriesDropDown.addEventListener('change', event => {
+          let categoryObj = {
+            category: {
+              "id" : categoriesDropDown.id,
+              "name" : categoriesDropDown.value
+            }
+          };
+          if(extension.field){
+            console.log("Saving JSON - " + JSON.stringify(categoryObj));
+            extension.field.setValue(categoryObj);
+          }
+        });
+      });
+    </script>
+
+    <div class="grid">
+      <span>Category: </span>
+      <select name="categories" id="category">
+      </select>
+    </div>
+
+  </body>
+</html>

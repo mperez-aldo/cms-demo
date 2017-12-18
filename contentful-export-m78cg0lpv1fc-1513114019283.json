@@ -1,0 +1,2003 @@
+{
+  "contentTypes": [
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "page",
+        "type": "ContentType",
+        "createdAt": "2017-11-28T19:31:13.296Z",
+        "updatedAt": "2017-12-07T22:16:10.584Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 9,
+        "version": 18,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 17,
+        "firstPublishedAt": "2017-11-28T19:31:13.792Z",
+        "publishedAt": "2017-12-07T22:16:10.584Z"
+      },
+      "displayField": "url",
+      "name": "page",
+      "description": "A page is a container of content-modules, where we also store SEO attributes and meta-tags, hybris category IDs, and template types",
+      "fields": [
+        {
+          "id": "url",
+          "name": "url",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [
+            {
+              "unique": true
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "contentModules",
+          "name": "content-modules",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "size": {
+                "min": 1,
+                "max": 5
+              },
+              "message": "Too many content modules for one page"
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkContentType": [
+                  "mainStory",
+                  "productGrid",
+                  "topStory"
+                ],
+                "message": "Unsupported module"
+              }
+            ],
+            "linkType": "Entry"
+          }
+        },
+        {
+          "id": "beginDate",
+          "name": "begin-date",
+          "type": "Date",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "endDate",
+          "name": "end-date",
+          "type": "Date",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "type",
+          "name": "type",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "in": [
+                "gender-page",
+                "home-page",
+                "category-page",
+                "plp-page",
+                "help-page",
+                "legal-page",
+                "page"
+              ],
+              "message": "Unsupported page type"
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "mainStory",
+        "type": "ContentType",
+        "createdAt": "2017-12-07T22:04:57.935Z",
+        "updatedAt": "2017-12-07T22:12:10.882Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 3,
+        "version": 6,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 5,
+        "firstPublishedAt": "2017-12-07T22:04:58.068Z",
+        "publishedAt": "2017-12-07T22:12:10.882Z"
+      },
+      "displayField": "title",
+      "name": "main-story",
+      "description": "Main story module",
+      "fields": [
+        {
+          "id": "title",
+          "name": "title",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "data",
+          "name": "data",
+          "type": "Object",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "topStory",
+        "type": "ContentType",
+        "createdAt": "2017-12-07T22:11:14.459Z",
+        "updatedAt": "2017-12-12T14:27:58.247Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 17,
+        "version": 38,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 37,
+        "firstPublishedAt": "2017-12-07T22:11:40.548Z",
+        "publishedAt": "2017-12-12T14:27:58.247Z"
+      },
+      "displayField": "title",
+      "name": "top-story",
+      "description": "Top story module",
+      "fields": [
+        {
+          "id": "title",
+          "name": "title",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "products",
+          "name": "products",
+          "type": "Object",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "productGrid",
+        "type": "ContentType",
+        "createdAt": "2017-12-07T22:14:11.817Z",
+        "updatedAt": "2017-12-08T16:26:49.577Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 5,
+        "version": 10,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 9,
+        "firstPublishedAt": "2017-12-07T22:14:12.073Z",
+        "publishedAt": "2017-12-08T16:26:49.577Z"
+      },
+      "displayField": "title",
+      "name": "product-grid",
+      "description": "Product grid module",
+      "fields": [
+        {
+          "id": "title",
+          "name": "title",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "category",
+          "name": "category",
+          "type": "Object",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    }
+  ],
+  "editorInterfaces": [
+    {
+      "sys": {
+        "id": "default",
+        "type": "EditorInterface",
+        "space": {
+          "sys": {
+            "id": "m78cg0lpv1fc",
+            "type": "Link",
+            "linkType": "Space"
+          }
+        },
+        "version": 18,
+        "createdAt": "2017-11-28T19:31:13.928Z",
+        "createdBy": {
+          "sys": {
+            "id": "1JorfDtroLn4hpHfdd2uKW",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "updatedAt": "2017-12-07T22:16:11.193Z",
+        "updatedBy": {
+          "sys": {
+            "id": "1JorfDtroLn4hpHfdd2uKW",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "contentType": {
+          "sys": {
+            "id": "page",
+            "type": "Link",
+            "linkType": "ContentType"
+          }
+        }
+      },
+      "controls": [
+        {
+          "fieldId": "url",
+          "settings": {
+            "helpText": "This is the URL of the page"
+          },
+          "widgetId": "urlEditor"
+        },
+        {
+          "fieldId": "contentModules",
+          "settings": {
+            "helpText": "Content modules for the page",
+            "bulkEditing": false
+          },
+          "widgetId": "entryCardsEditor"
+        },
+        {
+          "fieldId": "beginDate",
+          "settings": {
+            "ampm": "24",
+            "format": "time",
+            "helpText": "The date where the page will be visible on the website"
+          },
+          "widgetId": "datePicker"
+        },
+        {
+          "fieldId": "endDate",
+          "settings": {
+            "ampm": "24",
+            "format": "time",
+            "helpText": "The date when the page will expire"
+          },
+          "widgetId": "datePicker"
+        },
+        {
+          "fieldId": "type",
+          "settings": {
+            "helpText": "Page type"
+          },
+          "widgetId": "dropdown"
+        }
+      ]
+    },
+    {
+      "sys": {
+        "id": "default",
+        "type": "EditorInterface",
+        "space": {
+          "sys": {
+            "id": "m78cg0lpv1fc",
+            "type": "Link",
+            "linkType": "Space"
+          }
+        },
+        "version": 6,
+        "createdAt": "2017-12-07T22:04:58.184Z",
+        "createdBy": {
+          "sys": {
+            "id": "1JorfDtroLn4hpHfdd2uKW",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "updatedAt": "2017-12-07T22:12:11.298Z",
+        "updatedBy": {
+          "sys": {
+            "id": "1JorfDtroLn4hpHfdd2uKW",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "contentType": {
+          "sys": {
+            "id": "mainStory",
+            "type": "Link",
+            "linkType": "ContentType"
+          }
+        }
+      },
+      "controls": [
+        {
+          "fieldId": "title",
+          "widgetId": "singleLine"
+        },
+        {
+          "fieldId": "data",
+          "widgetId": "objectEditor"
+        }
+      ]
+    },
+    {
+      "sys": {
+        "id": "default",
+        "type": "EditorInterface",
+        "space": {
+          "sys": {
+            "id": "m78cg0lpv1fc",
+            "type": "Link",
+            "linkType": "Space"
+          }
+        },
+        "version": 34,
+        "createdAt": "2017-12-07T22:11:40.672Z",
+        "createdBy": {
+          "sys": {
+            "id": "1JorfDtroLn4hpHfdd2uKW",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "updatedAt": "2017-12-12T14:27:58.723Z",
+        "updatedBy": {
+          "sys": {
+            "id": "1JorfDtroLn4hpHfdd2uKW",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "contentType": {
+          "sys": {
+            "id": "topStory",
+            "type": "Link",
+            "linkType": "ContentType"
+          }
+        }
+      },
+      "controls": [
+        {
+          "fieldId": "title",
+          "widgetId": "singleLine"
+        },
+        {
+          "fieldId": "products",
+          "widgetId": "cf-contentful-ui-top-story-module"
+        }
+      ]
+    },
+    {
+      "sys": {
+        "id": "default",
+        "type": "EditorInterface",
+        "space": {
+          "sys": {
+            "id": "m78cg0lpv1fc",
+            "type": "Link",
+            "linkType": "Space"
+          }
+        },
+        "version": 10,
+        "createdAt": "2017-12-07T22:14:12.199Z",
+        "createdBy": {
+          "sys": {
+            "id": "1JorfDtroLn4hpHfdd2uKW",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "updatedAt": "2017-12-08T16:26:50.063Z",
+        "updatedBy": {
+          "sys": {
+            "id": "1JorfDtroLn4hpHfdd2uKW",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "contentType": {
+          "sys": {
+            "id": "productGrid",
+            "type": "Link",
+            "linkType": "ContentType"
+          }
+        }
+      },
+      "controls": [
+        {
+          "fieldId": "title",
+          "widgetId": "singleLine"
+        },
+        {
+          "fieldId": "category",
+          "widgetId": "cf-contentful-ui-product-grid-module"
+        }
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "1Ii51V49NuyQeS0ckQqC6S",
+        "type": "Entry",
+        "createdAt": "2017-12-08T04:56:16.448Z",
+        "updatedAt": "2017-12-11T16:03:04.713Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 8,
+        "version": 28,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 27,
+        "firstPublishedAt": "2017-12-08T04:56:29.585Z",
+        "publishedAt": "2017-12-11T16:03:04.713Z",
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "page"
+          }
+        }
+      },
+      "fields": {
+        "url": {
+          "en-US": "/women"
+        },
+        "contentModules": {
+          "en-US": [
+            {
+              "sys": {
+                "type": "Link",
+                "linkType": "Entry",
+                "id": "1eBdKZUnZmgSgigOqiksyM"
+              }
+            },
+            {
+              "sys": {
+                "type": "Link",
+                "linkType": "Entry",
+                "id": "16tgNMxCA0eAy4OysCUSGu"
+              }
+            }
+          ]
+        },
+        "beginDate": {
+          "en-US": "2017-12-14T00:00"
+        },
+        "endDate": {
+          "en-US": "2017-12-31T00:00"
+        },
+        "type": {
+          "en-US": "plp-page"
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "4WlbzGKkty80iIooeQei0w",
+        "type": "Entry",
+        "createdAt": "2017-12-08T14:52:40.090Z",
+        "updatedAt": "2017-12-11T18:45:34.952Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 4,
+        "version": 14,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 13,
+        "firstPublishedAt": "2017-12-08T14:52:55.240Z",
+        "publishedAt": "2017-12-11T18:45:34.952Z",
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "page"
+          }
+        }
+      },
+      "fields": {
+        "url": {
+          "en-US": "/women/footwear"
+        },
+        "contentModules": {
+          "en-US": [
+            {
+              "sys": {
+                "type": "Link",
+                "linkType": "Entry",
+                "id": "1eBdKZUnZmgSgigOqiksyM"
+              }
+            }
+          ]
+        },
+        "beginDate": {
+          "en-US": "2017-12-14T00:00"
+        },
+        "endDate": {
+          "en-US": "2017-12-31T00:00"
+        },
+        "type": {
+          "en-US": "plp-page"
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "25vLF6dFn6AUMICgKAGi6K",
+        "type": "Entry",
+        "createdAt": "2017-12-08T16:14:03.793Z",
+        "updatedAt": "2017-12-08T16:27:47.895Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 6,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 5,
+        "firstPublishedAt": "2017-12-08T16:27:47.894Z",
+        "publishedAt": "2017-12-08T16:27:47.895Z",
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "page"
+          }
+        }
+      },
+      "fields": {
+        "url": {
+          "en-US": "/women/footwear/boots"
+        },
+        "contentModules": {
+          "en-US": [
+            {
+              "sys": {
+                "type": "Link",
+                "linkType": "Entry",
+                "id": "2oPjM1ska0qi6226IgOC8U"
+              }
+            }
+          ]
+        },
+        "beginDate": {
+          "en-US": "2017-12-14T00:00"
+        },
+        "endDate": {
+          "en-US": "2017-12-31T00:00"
+        },
+        "type": {
+          "en-US": "plp-page"
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "2oPjM1ska0qi6226IgOC8U",
+        "type": "Entry",
+        "createdAt": "2017-12-08T16:27:24.042Z",
+        "updatedAt": "2017-12-08T16:27:42.143Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 13,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 12,
+        "firstPublishedAt": "2017-12-08T16:27:42.143Z",
+        "publishedAt": "2017-12-08T16:27:42.143Z",
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "productGrid"
+          }
+        }
+      },
+      "fields": {
+        "title": {
+          "en-US": "Boots category "
+        },
+        "category": {
+          "en-US": {
+            "category": {
+              "id": "category",
+              "name": "Men"
+            }
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "16tgNMxCA0eAy4OysCUSGu",
+        "type": "Entry",
+        "createdAt": "2017-12-08T19:04:46.941Z",
+        "updatedAt": "2017-12-11T19:15:11.447Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 7,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 5,
+        "firstPublishedAt": "2017-12-08T19:04:55.343Z",
+        "publishedAt": "2017-12-08T19:04:55.343Z",
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "productGrid"
+          }
+        }
+      },
+      "fields": {
+        "title": {
+          "en-US": "Category"
+        },
+        "category": {
+          "en-US": {
+            "category": {
+              "id": "category",
+              "name": "Gift Cards"
+            }
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "1eBdKZUnZmgSgigOqiksyM",
+        "type": "Entry",
+        "createdAt": "2017-12-11T15:54:08.376Z",
+        "updatedAt": "2017-12-12T14:28:28.680Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 3,
+        "version": 18,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 17,
+        "firstPublishedAt": "2017-12-11T15:56:19.894Z",
+        "publishedAt": "2017-12-12T14:28:28.680Z",
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "topStory"
+          }
+        }
+      },
+      "fields": {
+        "title": {
+          "en-US": "awesome story",
+          "fr": "le top story"
+        },
+        "products": {
+          "en-US": {
+            "products": [
+              {
+                "id": "",
+                "img": "https://media.aldoshoes.com/v2/product/griffitt/98/griffitt_black_98_main_rc_gy_350X445.jpg",
+                "link": "https://app.contentful.com/Women/Handbags/Wallets-%26-wristlets/Griffitt/p/30046149-98",
+                "name": "Griffitt",
+                "text": "$25.00",
+                "sequence": 0
+              },
+              {
+                "id": "30046149-98",
+                "img": "https://media.aldoshoes.com/v2/product/griffitt/98/griffitt_black_98_main_rc_gy_350X445.jpg",
+                "link": "https://app.contentful.com/Women/Handbags/Wallets-%26-wristlets/Griffitt/p/30046149-98",
+                "name": "Griffitt",
+                "text": "$25.00",
+                "sequence": 1
+              },
+              {
+                "id": "31105614-82",
+                "img": "https://media.aldoshoes.com/v2/product/adarellan/82/adarellan_metallic_82_main_rc_nt_350X445.jpg",
+                "link": "https://app.contentful.com/Women/Accessories/Others/Adarellan/p/31105614-82",
+                "name": "Adarellan",
+                "text": "$7.50",
+                "sequence": 2
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "assets": [
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "6s3iG2OVmoUcosmA8ocqsG",
+        "type": "Asset",
+        "createdAt": "2017-11-28T19:14:10.299Z",
+        "updatedAt": "2017-11-28T19:14:15.922Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 2,
+        "firstPublishedAt": "2017-11-28T19:14:15.922Z",
+        "publishedAt": "2017-11-28T19:14:15.922Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "House icon"
+        },
+        "description": {
+          "en-US": "Category icon set"
+        },
+        "file": {
+          "en-US": {
+            "url": "//images.contentful.com/m78cg0lpv1fc/6s3iG2OVmoUcosmA8ocqsG/824102aa4f28aaa1a12bde9ff31702f4/1418244847_Streamline-18-256__1_.png",
+            "details": {
+              "size": 4244,
+              "image": {
+                "width": 250,
+                "height": 250
+              }
+            },
+            "fileName": "1418244847_Streamline-18-256 (1).png",
+            "contentType": "image/png"
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "1MgbdJNTsMWKI0W68oYqkU",
+        "type": "Asset",
+        "createdAt": "2017-11-28T19:14:10.329Z",
+        "updatedAt": "2017-11-28T19:14:16.253Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 2,
+        "firstPublishedAt": "2017-11-28T19:14:16.253Z",
+        "publishedAt": "2017-11-28T19:14:16.253Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "Chive logo"
+        },
+        "description": {
+          "en-US": "Brand logo"
+        },
+        "file": {
+          "en-US": {
+            "url": "//images.contentful.com/m78cg0lpv1fc/1MgbdJNTsMWKI0W68oYqkU/2108e2f32aa338e2bf562f9fe92425bf/9ef190c59f0d375c0dea58b58a4bc1f0.jpeg",
+            "details": {
+              "size": 44089,
+              "image": {
+                "width": 500,
+                "height": 500
+              }
+            },
+            "fileName": "9ef190c59f0d375c0dea58b58a4bc1f0.jpeg",
+            "contentType": "image/jpeg"
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "10TkaLheGeQG6qQGqWYqUI",
+        "type": "Asset",
+        "createdAt": "2017-11-28T19:14:10.331Z",
+        "updatedAt": "2017-11-28T19:14:15.921Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 2,
+        "firstPublishedAt": "2017-11-28T19:14:15.921Z",
+        "publishedAt": "2017-11-28T19:14:15.921Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "Whisk beaters"
+        },
+        "description": {
+          "en-US": "Merchandise photo"
+        },
+        "file": {
+          "en-US": {
+            "url": "//images.contentful.com/m78cg0lpv1fc/10TkaLheGeQG6qQGqWYqUI/36fcfc279d24e89747d6df61d4e60703/ryugj83mqwa1asojwtwb.jpg",
+            "details": {
+              "size": 28435,
+              "image": {
+                "width": 450,
+                "height": 600
+              }
+            },
+            "fileName": "ryugj83mqwa1asojwtwb.jpg",
+            "contentType": "image/jpeg"
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "KTRF62Q4gg60q6WCsWKw8",
+        "type": "Asset",
+        "createdAt": "2017-11-28T19:14:10.691Z",
+        "updatedAt": "2017-11-28T19:14:16.228Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 2,
+        "firstPublishedAt": "2017-11-28T19:14:16.227Z",
+        "publishedAt": "2017-11-28T19:14:16.227Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "SoSo Wall Clock"
+        },
+        "description": {
+          "en-US": "by Lemnos"
+        },
+        "file": {
+          "en-US": {
+            "url": "//images.contentful.com/m78cg0lpv1fc/KTRF62Q4gg60q6WCsWKw8/4445694825b8534087926daa1a36d2a5/soso.clock.jpg",
+            "details": {
+              "size": 66927,
+              "image": {
+                "width": 1000,
+                "height": 1000
+              }
+            },
+            "fileName": "soso.clock.jpg",
+            "contentType": "image/jpeg"
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "wtrHxeu3zEoEce2MokCSi",
+        "type": "Asset",
+        "createdAt": "2017-11-28T19:14:10.694Z",
+        "updatedAt": "2017-11-28T19:14:16.250Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 2,
+        "firstPublishedAt": "2017-11-28T19:14:16.250Z",
+        "publishedAt": "2017-11-28T19:14:16.250Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "Playsam Streamliner"
+        },
+        "description": {
+          "en-US": "Merchandise photo"
+        },
+        "file": {
+          "en-US": {
+            "url": "//images.contentful.com/m78cg0lpv1fc/wtrHxeu3zEoEce2MokCSi/931c124f2699454848578655a3bd730f/quwowooybuqbl6ntboz3.jpg",
+            "details": {
+              "size": 27187,
+              "image": {
+                "width": 600,
+                "height": 446
+              }
+            },
+            "fileName": "quwowooybuqbl6ntboz3.jpg",
+            "contentType": "image/jpeg"
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "6m5AJ9vMPKc8OUoQeoCS4o",
+        "type": "Asset",
+        "createdAt": "2017-11-28T19:14:10.763Z",
+        "updatedAt": "2017-11-28T19:14:16.645Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 2,
+        "firstPublishedAt": "2017-11-28T19:14:16.645Z",
+        "publishedAt": "2017-11-28T19:14:16.645Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "Home and Kitchen"
+        },
+        "description": {
+          "en-US": "category icon"
+        },
+        "file": {
+          "en-US": {
+            "url": "//images.contentful.com/m78cg0lpv1fc/6m5AJ9vMPKc8OUoQeoCS4o/6a875f987d289e4ea3db7e9628706bc5/1418244847_Streamline-18-256.png",
+            "details": {
+              "size": 2977,
+              "image": {
+                "width": 256,
+                "height": 256
+              }
+            },
+            "fileName": "1418244847_Streamline-18-256.png",
+            "contentType": "image/png"
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "4zj1ZOfHgQ8oqgaSKm4Qo2",
+        "type": "Asset",
+        "createdAt": "2017-11-28T19:14:10.983Z",
+        "updatedAt": "2017-11-28T19:14:16.925Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 2,
+        "firstPublishedAt": "2017-11-28T19:14:16.925Z",
+        "publishedAt": "2017-11-28T19:14:16.925Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "Playsam"
+        },
+        "description": {
+          "en-US": "Brand logo"
+        },
+        "file": {
+          "en-US": {
+            "url": "//images.contentful.com/m78cg0lpv1fc/4zj1ZOfHgQ8oqgaSKm4Qo2/6a875f987d289e4ea3db7e9628706bc5/playsam.jpg",
+            "details": {
+              "size": 7003,
+              "image": {
+                "width": 100,
+                "height": 100
+              }
+            },
+            "fileName": "playsam.jpg",
+            "contentType": "image/jpeg"
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "3wtvPBbBjiMKqKKga8I2Cu",
+        "type": "Asset",
+        "createdAt": "2017-11-28T19:14:11.196Z",
+        "updatedAt": "2017-11-28T19:14:17.224Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 2,
+        "firstPublishedAt": "2017-11-28T19:14:17.224Z",
+        "publishedAt": "2017-11-28T19:14:17.224Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "Normann Copenhagen"
+        },
+        "description": {
+          "en-US": "Brand logo"
+        },
+        "file": {
+          "en-US": {
+            "url": "//images.contentful.com/m78cg0lpv1fc/3wtvPBbBjiMKqKKga8I2Cu/3de51e2a4ac2956dea66a24e2067fe0c/zJYzDlGk.jpeg",
+            "details": {
+              "size": 12302,
+              "image": {
+                "width": 353,
+                "height": 353
+              }
+            },
+            "fileName": "zJYzDlGk.jpeg",
+            "contentType": "image/jpeg"
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "Xc0ny7GWsMEMCeASWO2um",
+        "type": "Asset",
+        "createdAt": "2017-11-28T19:14:11.227Z",
+        "updatedAt": "2017-11-28T19:14:16.917Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 2,
+        "firstPublishedAt": "2017-11-28T19:14:16.917Z",
+        "publishedAt": "2017-11-28T19:14:16.917Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "Hudson Wall Cup "
+        },
+        "description": {
+          "en-US": "Merchandise image"
+        },
+        "file": {
+          "en-US": {
+            "url": "//images.contentful.com/m78cg0lpv1fc/Xc0ny7GWsMEMCeASWO2um/e29cf6f2ecf639399c70954de971fbcb/jqvtazcyfwseah9fmysz.jpg",
+            "details": {
+              "size": 48751,
+              "image": {
+                "width": 600,
+                "height": 600
+              }
+            },
+            "fileName": "jqvtazcyfwseah9fmysz.jpg",
+            "contentType": "image/jpeg"
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "6t4HKjytPi0mYgs240wkG",
+        "type": "Asset",
+        "createdAt": "2017-11-28T19:14:11.308Z",
+        "updatedAt": "2017-11-28T19:14:16.898Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 2,
+        "firstPublishedAt": "2017-11-28T19:14:16.898Z",
+        "publishedAt": "2017-11-28T19:14:16.898Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "Toys"
+        },
+        "description": {
+          "en-US": "Category icon set"
+        },
+        "file": {
+          "en-US": {
+            "url": "//images.contentful.com/m78cg0lpv1fc/6t4HKjytPi0mYgs240wkG/f6807f588a08876d450527b0ebdd1c28/toys_512pxGREY.png",
+            "details": {
+              "size": 6744,
+              "image": {
+                "width": 128,
+                "height": 128
+              }
+            },
+            "fileName": "toys_512pxGREY.png",
+            "contentType": "image/png"
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "2Y8LhXLnYAYqKCGEWG4EKI",
+        "type": "Asset",
+        "createdAt": "2017-11-28T19:14:11.633Z",
+        "updatedAt": "2017-11-28T19:14:17.241Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "publishedVersion": 2,
+        "firstPublishedAt": "2017-11-28T19:14:17.241Z",
+        "publishedAt": "2017-11-28T19:14:17.241Z"
+      },
+      "fields": {
+        "title": {
+          "en-US": "Lemnos"
+        },
+        "description": {
+          "en-US": "company logo"
+        },
+        "file": {
+          "en-US": {
+            "url": "//images.contentful.com/m78cg0lpv1fc/2Y8LhXLnYAYqKCGEWG4EKI/44c20cc6748b5629906753fd052c6e82/lemnos-logo.jpg",
+            "details": {
+              "size": 7149,
+              "image": {
+                "width": 175,
+                "height": 32
+              }
+            },
+            "fileName": "lemnos-logo.jpg",
+            "contentType": "image/jpeg"
+          }
+        }
+      }
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "id": "4JdYy1h5baoSa4Uw2UeUCy",
+        "type": "Asset",
+        "createdAt": "2017-12-01T18:47:00.476Z",
+        "updatedAt": "2017-12-01T18:47:00.476Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "version": 1
+      },
+      "fields": {
+      }
+    }
+  ],
+  "locales": [
+    {
+      "name": "US English",
+      "code": "en-US",
+      "fallbackCode": null,
+      "default": true,
+      "contentManagementApi": true,
+      "contentDeliveryApi": true,
+      "optional": false,
+      "sys": {
+        "type": "Locale",
+        "id": "1MJmTBYAkJjBhY8lSotnaK",
+        "version": 0,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "createdAt": "2017-11-28T19:14:07Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedAt": "2017-11-28T19:14:07Z"
+      }
+    },
+    {
+      "name": "French",
+      "code": "fr",
+      "fallbackCode": null,
+      "default": false,
+      "contentManagementApi": true,
+      "contentDeliveryApi": true,
+      "optional": false,
+      "sys": {
+        "type": "Locale",
+        "id": "1wlT0BbNVCqOGGeEkGgGkm",
+        "version": 0,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "createdAt": "2017-12-12T14:25:15Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedAt": "2017-12-12T14:25:15Z"
+      }
+    }
+  ],
+  "webhooks": [
+    {
+      "url": "http://live-hyb.aldoshoes.com/aldowebservices/v2/caAldo/catalogs/caAldoProductCatalog/Online",
+      "httpBasicUsername": null,
+      "name": "Hybris category lookup",
+      "headers": [
+      ],
+      "topics": [
+        "*.create",
+        "*.publish",
+        "Asset.*",
+        "ContentType.*",
+        "Entry.*"
+      ],
+      "sys": {
+        "type": "WebhookDefinition",
+        "id": "79yahGZyUgYdfVZjIDaQr4",
+        "version": 0,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "createdAt": "2017-11-29T15:14:29Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedAt": "2017-11-29T15:14:29Z"
+      }
+    }
+  ],
+  "roles": [
+    {
+      "name": "Developer",
+      "description": "Allows reading Entries and managing API Keys",
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": [
+            "read"
+          ],
+          "constraint": {
+            "and": [
+              {
+                "equals": [
+                  {
+                    "doc": "sys.type"
+                  },
+                  "Entry"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "effect": "allow",
+          "actions": [
+            "read"
+          ],
+          "constraint": {
+            "and": [
+              {
+                "equals": [
+                  {
+                    "doc": "sys.type"
+                  },
+                  "Asset"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "permissions": {
+        "ContentModel": [
+          "read"
+        ],
+        "Settings": [
+        ],
+        "ContentDelivery": "all"
+      },
+      "sys": {
+        "type": "Role",
+        "id": "1MJVpjP4Qu9dZDbVrBisTI",
+        "version": 0,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "createdAt": "2017-11-28T19:14:07Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedAt": "2017-11-28T19:14:07Z"
+      }
+    },
+    {
+      "name": "Editor",
+      "description": "Allows editing, publishing and archiving of content",
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": "all",
+          "constraint": {
+            "and": [
+              {
+                "equals": [
+                  {
+                    "doc": "sys.type"
+                  },
+                  "Entry"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "effect": "allow",
+          "actions": "all",
+          "constraint": {
+            "and": [
+              {
+                "equals": [
+                  {
+                    "doc": "sys.type"
+                  },
+                  "Asset"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "permissions": {
+        "ContentModel": [
+          "read"
+        ],
+        "Settings": [
+        ],
+        "ContentDelivery": [
+        ]
+      },
+      "sys": {
+        "type": "Role",
+        "id": "1MKUkWcpgWLSdkVWlNctPM",
+        "version": 0,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "m78cg0lpv1fc"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "createdAt": "2017-11-28T19:14:07Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1JorfDtroLn4hpHfdd2uKW"
+          }
+        },
+        "updatedAt": "2017-11-28T19:14:07Z"
+      }
+    }
+  ]
+}

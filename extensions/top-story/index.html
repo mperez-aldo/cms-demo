@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>UI-Extension Featured Product</title>
+    <!-- load Contentful stylesheet to have some base styles -->
+    <link rel="stylesheet" href="https://contentful.github.io/ui-extensions-sdk/cf-extension.css">
+    <!-- load Contentful extensions SDK -->
+    <script src="https://contentful.github.io/ui-extensions-sdk/cf-extension-api.js"></script>
+    <script src="top-story.js"></script>
+    <link href="styles.css" rel="stylesheet">
+  </head>
+  <body>
+    <script type="text/javascript">
+      let extensionRef = window.contentfulExtension || window.contentfulWidget;
+      // initialize the Contentful extension, using the UI extensions SDK
+      window.contentfulExtension.init(extension => {
+        const value = extension.field.getValue(),
+            saveButton = document.getElementById('save-button'),
+            targetArea = document.getElementById('target-area');
+        /* init featured products */ 
+        if(value && value.products){
+          console.log("loading JSON - " + JSON.stringify(value.products));
+          value.products.forEach(function(product){
+            let productDiv = createdProductElem(product,false);
+            targetArea.appendChild(productDiv);
+          });
+        }        
+        // send changes to the Contentful web app
+        saveButton.addEventListener('click', event => {
+          let featuredProducts = [],
+              featuredElements = (document.getElementById('target-area')).getElementsByTagName('div');
+          for(i = 0; i <= featuredElements.length; i++){
+            if(featuredElements[i]){
+              productObj = createFeaturedProductObj(featuredElements[i],i);
+              featuredProducts.push(productObj);
+            }
+          }
+          let contentfulValue = {
+            products: featuredProducts
+          };
+          if(extension.field){
+            console.log("Saving JSON - " + JSON.stringify(contentfulValue));
+            extension.field.setValue(contentfulValue);
+          }
+        });
+        extension.window.updateHeight();
+      });
+    </script>
+
+    <div class="grid" id="content">
+      <div class="col-1-2" >
+        <h4>Search for products:</h2>
+        <div class="search-box">
+          <label for="search-criteria">Criteria:</label>
+          <input type="text" id="search-criteria" name="criteria" value=""/>
+          <input type="button" onclick="searchProducts();" value="Search"/>
+        </div>
+        <div><br/></div>
+        <div id="available-products" ondrop="drop(event,this)" ondragover="allowDrop(event)">
+        </div>
+      </div>  
+      <div class="col-1-2" >        
+        <h4>Featured products selected:</h2>
+        <div class="saved-content">
+          <input type="button" value="Save" id="save-button"/>
+        </div>
+        <div><br/></div>
+        <div id="target-area" ondrop="drop(event,this)" ondragover="allowDrop(event)">
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
