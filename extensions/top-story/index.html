@@ -49,24 +49,66 @@
     </script>
 
     <div class="grid" id="content">
-      <div class="col-1-2" >
-        <h4>Search for products:</h2>
-        <div class="search-box">
-          <label for="search-criteria">Criteria:</label>
-          <input type="text" id="search-criteria" name="criteria" value=""/>
-          <input type="button" onclick="searchProducts();" value="Search"/>
+      <div class="top-story-div">
+        <label>Category ID</label>
+        <select name="category-id" id="story-cat-id">
+        </select>
+      </div>
+      <div class="top-story-div">
+        <label>Akamai folder name</label>
+        <input type="text" id="akamai-base-folder" name="akamai-folder" value=""/>
+      </div>
+      <div class="top-story-div">
+        <input type="button" onclick="addLook();" value="Add look"/>
+      </div>
+      <div class="top-story-div"><br/></div>
+      <div class="story-looks">
+        <div class="look">
+          <div class="top-story-div">
+            <label>Style name</label>
+            <input type="text" id="" name="" value=""/>
+          </div>
+          <div class="top-story-div">
+            <label>Color id</label>
+            <input type="text" id="" name="" value=""/>
+          </div>
+          <div class="top-story-div">
+            <label>Media type</label>
+            <select>
+              <option>Image</option>
+              <option>Video</option>
+            </select>
+          </div>
+          <div class="top-story-div">
+            <label>Front asset url</label>
+            <input type="text" id="" name="" value=""/>
+          </div>
+          <div class="top-story-div">
+            <label>Front asset alt text</label>
+            <input type="text" id="" name="" value=""/>
+          </div>
         </div>
-        <div><br/></div>
-        <div id="available-products" ondrop="drop(event,this)" ondragover="allowDrop(event)">
-        </div>
-      </div>  
-      <div class="col-1-2" >        
-        <h4>Featured products selected:</h2>
-        <div class="saved-content">
-          <input type="button" value="Save" id="save-button"/>
-        </div>
-        <div><br/></div>
-        <div id="target-area" ondrop="drop(event,this)" ondragover="allowDrop(event)">
+      </div>
+      <div class="featured-products-container">
+        <div class="col-1-2" >
+          <h4>Search for products:</h4>
+          <div class="search-box">
+            <label for="search-criteria">Criteria:</label>
+            <input type="text" id="search-criteria" name="criteria" value=""/>
+            <input type="button" onclick="searchProducts();" value="Search"/>
+          </div>
+          <div><br/></div>
+          <div id="available-products" ondrop="drop(event,this)" ondragover="allowDrop(event)">
+          </div>
+        </div>  
+        <div class="col-1-2" >        
+          <h4>Selected Featured products:</h4>
+          <div class="saved-content">
+            <input type="button" value="Save" id="save-button"/>
+          </div>
+          <div><br/></div>
+          <div id="target-area" ondrop="drop(event,this)" ondragover="allowDrop(event)">
+          </div>
         </div>
       </div>
     </div>

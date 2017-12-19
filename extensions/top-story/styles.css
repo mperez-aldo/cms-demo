@@ -2,7 +2,6 @@ body{
   overflow: hidden;
 }
 .grid{
-
 }
 .grid .col-1-2{
   width: 50%;
@@ -36,4 +35,20 @@ body{
 }
 #target-area, #content{
   min-height: 1000px;
+}
+.top-story-div{
+  width:100%;
+  position:relative;
+  float:left;
+}
+.top-story-div label{
+  width:200px;
+  display:block;
+  position:relative;
+  float:left;
+}
+.top-story-div input,select{
+  display:block;
+  position:relative;
+  float:left;
 }

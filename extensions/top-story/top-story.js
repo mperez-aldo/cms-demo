@@ -46,7 +46,7 @@ function createdProductElem(productObj, elemType){
 function searchProducts(){
   event.preventDefault();
   let searchQuery = document.getElementById('search-criteria').value,
-      url = encodeURI("https://www.callitspring.com/aldowebservices/v2/caAldo/products/search?query=:" + searchQuery + "&format=json&pageSize=5&fields=FULL"),
+      url = encodeURI("https://www.aldoshoes.com/aldowebservices/v2/caAldo/products/search?query=" + searchQuery + "&format=json&pageSize=5&sort=relevance&fields=FULL"),
       availableProductsArea = document.getElementById('available-products');
   const options = {
     headers: {
