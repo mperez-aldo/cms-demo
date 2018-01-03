@@ -1,0 +1,6 @@
+{
+  "name": "Story Asset URL",
+  "id": "cf-contentful-ui-story-asset-url",
+  "fieldTypes": ["Object"],
+  "srcdoc": "./index.html"
+}

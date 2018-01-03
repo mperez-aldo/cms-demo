@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>UI-Extension Featured Products</title>
+    <!-- load Contentful stylesheet to have some base styles -->
+    <link rel="stylesheet" href="https://contentful.github.io/ui-extensions-sdk/cf-extension.css">
+    <!-- load Contentful extensions SDK -->
+    <script src="https://contentful.github.io/ui-extensions-sdk/cf-extension-api.js"></script>
+    <style>
+      body{
+        overflow: hidden;
+      }
+      .grid{
+        min-height: 950px;
+        max-width: 800px;
+      }
+      .product{
+        position:relative;
+        float:left;
+        max-width:200px;
+        margin-top: 20px;
+      }
+      .product_info{
+        width:100%;
+        position:relative;
+        float:left;
+      }
+      .product span{
+        position:relative;
+        float:left;
+        width:100%;
+        display:block;
+      }
+      .product img{
+        max-width:100%;
+        max-height:200px;
+        position:relative;
+        float:left;
+      }
+      .product .remove-prod{
+        position: absolute;
+        top:0px;
+        right:40px;
+      }
+      #available-products{
+      }    
+    </style>
+    <script type="text/javascript">
+      /* clear the available products from oCC */
+      function clearAvailableProducts(availableProductsNode){
+        while (last = availableProductsNode.lastChild) availableProductsNode.removeChild(last);
+      }
+      /* Removes featured product from list */
+      function removeProd(prodElemID){
+        var element = document.getElementById(prodElemID);
+        element.outerHTML = "";   
+      }
+      /* create a featured product JSON */
+      function createFeaturedProductObj(htmlElement, index){
+        let spanElems = htmlElement.getElementsByTagName('span'),
+            imageElem = htmlElement.getElementsByTagName('img'),
+            linkElem = htmlElement.getElementsByTagName('a');
+        let featuredProduct = {
+          "id" : htmlElement.id,
+          "img" : imageElem[0].src,
+          "link" : linkElem[0].href,
+          "sequence" : index,
+          "name" : spanElems[0].innerHTML,
+          "text" : spanElems[2].innerHTML
+        };
+        return featuredProduct;
+      }
+      /* create featured product html element */
+      function createdProductElem(productObj, elemType){
+        let productDiv = document.createElement('div');
+        productDiv.className = "product";
+        if(elemType){
+          productDiv.id = productObj.code;
+          productDiv.innerHTML =  ' <span>' + productObj.name + '</span>' +
+                                  ' <span>' + productObj.code + '</span>' +
+                                  ' <span>' + productObj.price.formattedValue + '</span>' +                                  
+                                  ' <a class="link" href="' + productObj.url + '"><image src="' + productObj.images[0].url + '" alt="" /></a>' + 
+                                  ' <a href="javascript: removeProd(\'' + productObj.code + '\');" class="remove-prod">X</a>';
+        }else{
+          productDiv.id = productObj.id;
+          productDiv.innerHTML =  ' <span>' + productObj.name + '</span>' +
+                                  ' <span>' + productObj.id + '</span>' +
+                                  ' <span>' + productObj.text + '</span>' +
+                                  ' <a class="link" href="' + productObj.link + '"><image class="image" src="' + productObj.img + '" alt="" /></a>' + 
+                                  ' <a href="javascript: removeProd(\'' + productObj.id + '\');" class="remove-prod">X</a>';;
+        }
+        return productDiv;
+      }
+      /* get the features products from OCC */
+      function searchProducts(extension,searchQuery){
+        event.preventDefault();
+        let url = encodeURI("https://www.aldoshoes.com/aldowebservices/v2/caAldo/products/search?query=" + searchQuery + "&format=json&pageSize=5&sort=relevance&fields=FULL"),
+            availableProductsArea = document.getElementById('available-products');
+        const options = {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        };
+        fetch(url,options)
+        .then((resp) => resp.json())
+        .then(function(data) {          
+          //clearAvailableProducts(availableProductsArea);
+          // Examine the text in the response
+          data.products.forEach(function(product){
+            let productDiv = createdProductElem(product, true);            
+            availableProductsArea.appendChild(productDiv);
+          });          
+        })
+        .then(function(){
+          extension.window.updateHeight();
+        })
+        .catch(function(err) {
+          console.log('Fetch Error', err);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      let extensionRef = window.contentfulExtension || window.contentfulWidget;
+      // initialize the Contentful extension, using the UI extensions SDK
+      window.contentfulExtension.init(extension => {
+        const value = extension.field.getValue(),
+            saveButton = document.getElementById('save-button'),
+            targetArea = document.getElementById('available-products'),
+            searchButton = document.getElementById('search-button');
+        /* init featured products */ 
+        if(value && value["featured-products"]){
+          console.log("loading JSON - " + JSON.stringify(value["featured-products"]));
+          value["featured-products"].forEach(function(product){
+            let productDiv = createdProductElem(product,false);
+            targetArea.appendChild(productDiv);
+          });
+        }
+        // search products event
+        searchButton.addEventListener('click', event => {
+          let searchQuery = document.getElementById('search-criteria').value;
+          if(searchQuery && searchQuery !== ""){
+            searchProducts(extension,searchQuery);
+            extension.window.updateHeight();
+          }
+        });
+        // send changes to the Contentful web app
+        saveButton.addEventListener('click', event => {
+          let featuredProducts = [],
+              featuredElements = (document.getElementById('available-products')).getElementsByTagName('div');
+          for(i = 0; i <= featuredElements.length; i++){
+            if(featuredElements[i]){
+              productObj = createFeaturedProductObj(featuredElements[i],i);
+              featuredProducts.push(productObj);
+            }
+          }
+          let contentfulValue = {
+            "featured-products": featuredProducts
+          };
+          if(extension.field){
+            console.log("Saving JSON - " + JSON.stringify(contentfulValue));
+            extension.field.setValue(contentfulValue);
+          }
+        });
+        extension.window.updateHeight();
+      });
+    </script>
+    <div class="grid" id="content">
+      <div class="featured-products-container">
+          <h4>Search for products:</h4>
+          <div class="search-box">
+            <label for="search-criteria">Criteria:</label>
+            <input type="text" id="search-criteria" name="criteria" value=""/>
+            <input type="button" id="search-button" value="Search"/>
+            <input type="button" id="save-button" value="Save"/>
+          </div>
+          <div id="available-products">
+          </div>
+      </div>
+    </div>
+
+  </body>
+</html>

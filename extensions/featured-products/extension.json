@@ -1,0 +1,6 @@
+{
+  "name": "Featured Products",
+  "id": "cf-contentful-ui-featured-products",
+  "fieldTypes": ["Object"],
+  "srcdoc": "./index.html"
+}

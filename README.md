@@ -9,10 +9,12 @@ This demo looks to expose any technical limitation or restriction regarding any 
 * Fetching content API
 * Backup, export and import features
 
-# Create/Update any UI extension to contentful
-	```contentful-extension create --space-id m78cg0lpv1fc```
-	```contentful-extension update --space-id m78cg0lpv1fc --force```
+# Create/Update any UI extension to contentful 
+	`contentful-extension create --space-id m78cg0lpv1fc`
+	`contentful-extension update --space-id m78cg0lpv1fc --force`
+> This is the space ID from the sample commands = m78cg0lpv1fc
 
 # Run the local server
-	```npm start```
+	`npm start`
+
 

@@ -25,63 +25,97 @@
   </head>
   <body>
     <script type="text/javascript">
-      let extensionRef = window.contentfulExtension || window.contentfulWidget;      
-      fetchCategories();
+      /* Local debug */ 
+      const cfExt = window.contentfulExtension || window.contentfulWidget;
+      console.log(cfExt.window);
+      if(!cfExt.window){
+        fetchCategories(null);
+      }
+      /* Find all category IDs recursively and add them to the dropdown */ 
+      function addCategoriesToDropDown(jsonObj, dropDownElement, selectedID, parentCatURL){
+        let nodeCatURL = ((parentCatURL === "" || parentCatURL === "/aldo") ? "" : parentCatURL);
+        if (typeof jsonObj === 'string') {
+          return;
+        }
+        if (typeof jsonObj === 'object') {
+          if (jsonObj === null) {
+            return;
+          }
+          Object.keys(jsonObj).forEach(function (property) {
+            if(( property === "id" ) && (jsonObj[property] != "1") ){
+              let opt = document.createElement('option');
+              nodeCatURL = nodeCatURL + "/" + escape(jsonObj.name.toLowerCase().replace(/ /g,"-"));
+              opt.id = nodeCatURL;
+              opt.value = jsonObj[property];
+              opt.innerHTML = jsonObj[property] + " - " +  jsonObj.name;
+              if( (selectedID) && (jsonObj[property] === selectedID) ){
+                opt.selected = true;
+              }
+              dropDownElement.appendChild(opt);
+            }if(property === "subcategories"){
+              addCategoriesToDropDown(jsonObj[property],dropDownElement,selectedID,nodeCatURL);
+            }});
+        }
+        if(Array.isArray(jsonObj)){
+          jsonObj.forEach(function (jsonObjElem) {
+            addCategoriesToDropDown(jsonObjElem,dropDownElement,selectedID,parentCatURL);
+          });
+        }
+      }
       /* get the features products from OCC */
-      function fetchCategories(){        
-        let url = encodeURI("https://www.callitspring.com/aldowebservices/v2/caAldo/catalogs/caAldoProductCatalog/Online?format=json&pageSize=5");
+      function fetchCategories(selectedID){
+        let url = encodeURI("https://www.aldoshoes.com/aldowebservices/v2/caAldo/catalogs/caAldoProductCatalog/Online?format=json&");
         const options = {
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Content-Type': 'application/json'
           }
         };
-        fetch(url)
+        fetch(url,options)
         .then((resp) => resp.json())
         .then(function(data) {
           console.log(data);
           let categoriesDropDown = document.getElementById('category');
           // Examine the text in the response
-          data.categories[0].subcategories.forEach(function(category){
-            let opt = document.createElement('option');
-            opt.id = category.id;
-            opt.value = category.name;
-            opt.innerHTML = category.url;
-            categoriesDropDown.appendChild(opt);
-          });
+          addCategoriesToDropDown(data.categories,categoriesDropDown,selectedID,"");
+          console.log("Fetch complete");
         })
         .catch(function(err) {
-          console.log('Fetch Error', err);
+          console.log('Fetch Error - ', err);
         });
       }      
-      // initialize the Contentful extension, using the UI extensions SDK
+      //Contentful extension logic to retrieve and save the JSON value into the structure
       window.contentfulExtension.init(extension => {
         const value = extension.field.getValue();
         let categoriesDropDown = document.getElementById('category');
-        /* init categories */        
         if(value && value.category){
-          console.log("loading JSON - " + JSON.stringify(value.category));
-          categoriesDropDown.value = value.category.name;
+          console.log("loading saved JSON - " + JSON.stringify(value.category));
+          fetchCategories(value.category.id);
+          extension.window.updateHeight();
+        }else{
+          fetchCategories(null);
+          extension.window.updateHeight();
         }        
         // send changes to the Contentful web app
         categoriesDropDown.addEventListener('change', event => {
           let categoryObj = {
             category: {
-              "id" : categoriesDropDown.id,
-              "name" : categoriesDropDown.value
+              "id" : categoriesDropDown.value
             }
           };
           if(extension.field){
             console.log("Saving JSON - " + JSON.stringify(categoryObj));
+            let urlField = extension.entry.fields.url;            
             extension.field.setValue(categoryObj);
+            if(urlField){
+              urlField.setValue(categoriesDropDown.options[categoriesDropDown.selectedIndex].id); // cat url
+            }
           }
         });
       });
     </script>
 
     <div class="grid">
-      <span>Category: </span>
       <select name="categories" id="category">
       </select>
     </div>
