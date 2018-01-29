@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>UI-Extension Menu Editor</title>
+    <!-- load Contentful stylesheet to have some base styles -->
+    <link rel="stylesheet" href="https://contentful.github.io/ui-extensions-sdk/cf-extension.css">
+    <!-- load Contentful extensions SDK -->
+    <script src="https://contentful.github.io/ui-extensions-sdk/cf-extension-api.js"></script>
+    <style>
+      .grid{
+        height: 420px;
+        width:100%;
+      }
+      .grid .col-1-4{
+        width: 25%;
+        position:relative;
+        float:left;
+      }
+      .grid .row{
+        width: 100%;
+        position:relative;
+        float:left;
+      }
+      .grid .col-1-4 .inner-row{
+        width:90%;
+        position:relative;
+        float:left;
+        overflow:hidden;
+        margin-left:5%;
+        margin-top:20px;
+        border: 1px dotted grey;
+        background-color: #E0F7FA;
+      }
+      .grid .col-1-4 .inner-row span{
+        position:relative;
+        float:left;
+        width: 100%;
+        text-align: center;
+      }
+      .grid .col-1-4 .inner-row label{
+        text-align: center;
+        position:relative;
+        float:left;
+        width: 30%;
+        margin-top:5px;
+      }
+      .grid .col-1-4 .inner-row input{
+        position:relative;
+        float:left;
+        width: 65%;
+        margin-top:5px;
+      }
+      .grid .col-1-4 .inner-row select{
+        width:90%;
+        position:relative;
+        float:left;
+        margin-left: 5%;
+        margin-top:10px; 
+        margin-bottom:10px; 
+      }
+      #inner-row4{
+        background-color: #00838F;color: #fff; padding-bottom:65px;
+      }
+      ul{
+        list-style: none;
+        padding: 0px 0px 0px 0px;
+        margin: 0px 0px 0px 0px;
+      }
+      ul li{
+        position: relative;
+        overflow:hidden;
+        float:left;
+        width:90%;
+        margin-left:5%;
+        margin-top:10px;
+        border: 1px dotted grey;
+      }
+      .cat-selector1,.cat-selector2,.cat-selector3,.cat-selector4{
+        width:90%;
+        margin-left:5%;
+        position: relative;
+        float:left;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      /* Local debug */ 
+      const cfExt = window.contentfulExtension || window.contentfulWidget;
+      /* Find all category IDs recursively and add them to the dropdown */ 
+      function createBaseDropDown(dropDownElem, jsonObj, parentCatURL){
+        let nodeCatURL = ((parentCatURL === "" || parentCatURL === "/aldo") ? "" : parentCatURL);
+        if (typeof jsonObj === 'string') {
+          return;
+        }
+        if (typeof jsonObj === 'object') {
+          if (jsonObj === null) {
+            return;
+          }
+          Object.keys(jsonObj).forEach(function (property) {
+            if(( property === "id" ) && (jsonObj[property] != "1") ){
+              let opt = document.createElement('option');
+              nodeCatURL = nodeCatURL + "/" + escape(jsonObj.name.toLowerCase().replace(/ /g,"-"));
+              opt.id = nodeCatURL;
+              opt.value = jsonObj[property];
+              opt.innerHTML = jsonObj[property] + " - " +  jsonObj.name;              
+              dropDownElem.appendChild(opt);
+            }if(property === "subcategories"){
+              createBaseDropDown(dropDownElem, jsonObj[property], nodeCatURL);
+            }
+          });
+        }
+        if(Array.isArray(jsonObj)){
+          jsonObj.forEach(function (jsonObjElem) {
+            createBaseDropDown(dropDownElem, jsonObjElem, parentCatURL);
+          });
+        }
+      }
+      /* get the features products from OCC */
+      function fetchCategories(menuObject){
+        let url = encodeURI("https://www.aldoshoes.com/aldowebservices/v2/caAldo/catalogs/caAldoProductCatalog/Online?format=json&");
+        const options = {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        };
+        fetch(url,options)
+        .then((resp) => resp.json())
+        .then(function(data) {          
+          let baseDropDown = document.createElement('select');
+          createBaseDropDown(baseDropDown,data.categories,"");
+          updateCategorySelectors(baseDropDown, menuObject);
+        })
+        .catch(function(err) {
+          console.log('Fetch Error - ', err);
+        });
+      }
+      /* Add the dropDown template to all select elements */
+      function updateCategorySelectors(baseDropDown, menuObject){ 
+        let dropDownElements;
+        for(var i = 0; i < 4; i++){
+          dropDownElements = document.getElementsByClassName('cat-selector' + (i+1));
+          for (var j = 0; j < dropDownElements.length; j++) {
+            dropDownElements[j].innerHTML = baseDropDown.innerHTML;
+            /* Pre-selects the value saved in contentful */
+            if(menuObject != null){
+              /* top categories */
+              if(j == 0){
+                let catTitleElem = document.getElementById("top-cat-title" + (i+1));
+                if(catTitleElem){
+                  catTitleElem.value = menuObject["top-categories"][i].title;
+                }
+                if(menuObject["top-categories"][i]){
+                  dropDownElements[j].value = menuObject["top-categories"][i].id;
+                }
+              /* sub categories */
+              }else{
+                if(menuObject["top-categories"][i].categories[j-1]){
+                  dropDownElements[j].value = menuObject["top-categories"][i].categories[j-1].id;
+                }
+              }
+            }
+          }
+        }
+      }
+      /* Creates JSON object from HTML elements */
+      function createJSONObj(){
+        let jsonObj = {
+          "top-categories":[]
+        };
+        for(var i = 0; i < 4; i++){
+          let dropDownElements = document.getElementsByClassName('cat-selector' + (i+1));
+          for (var j = 0; j < dropDownElements.length; j++) {
+            let selectedOption = dropDownElements[j].options[dropDownElements[j].selectedIndex];
+            /* top categories */
+            if(j == 0){
+              let catTitleElem = document.getElementById("top-cat-title" + (i+1)),
+                  catTitle = "";
+              if(catTitleElem && catTitleElem.value && catTitleElem.value != ""){
+                catTitle = catTitleElem.value;
+              }else{
+                catTitle = selectedOption.text;
+              }
+              let cat = {
+                "title" : catTitle,
+                "id" : selectedOption.value,
+                "url" : selectedOption.id,
+                "categories" : []
+              };
+              jsonObj["top-categories"].push(cat);
+            /* sub categories */
+            }else{
+              let cat = {
+                "title" : selectedOption.text,
+                "id" : selectedOption.value,
+                "url" : selectedOption.id
+              };
+              jsonObj["top-categories"][i].categories.push(cat);
+            }
+          }
+        }
+        return jsonObj;
+      }
+      //Contentful extension logic to retrieve and save the JSON value into the structure
+      window.contentfulExtension.init(extension => {
+        const value = extension.field.getValue(),
+              saveButton = document.getElementById('save-button');
+        /* init categories */ 
+        if(value && value["top-categories"]){
+          //console.log("loading JSON - " + JSON.stringify(value));
+          if(extension.field.id != "women"){
+            document.getElementById("col3").style.display = "none";
+          }
+          fetchCategories(value);
+        }else{
+          fetchCategories(null);
+        }
+        // Send changes to the contentful web app
+        saveButton.addEventListener('click', event => {
+          let contentfulValue = createJSONObj();
+          if(extension.field){
+            //console.log("Saving JSON - " + JSON.stringify(contentfulValue));
+            extension.field.setValue(contentfulValue);
+          }
+        });
+        extension.window.updateHeight();
+      });
+    </script>
+    <div class="grid">
+      <div class="row">
+          <input type="button" id="save-button" value="Save"/>
+      </div>
+      <div class="row">
+        <div class="col-1-4" id="col1">
+          <div class="inner-row">
+            <span>Level 2</span>
+            <label>Title</label>
+            <input type="text" name="" id="top-cat-title1" value=""/>
+            <select class="cat-selector1" id="cat1">
+            </select>
+          </div>
+          <ul>
+            <li>
+              <select class="cat-selector1" id="cat1-subcat1">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector1" id="cat1-subcat2">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector1" id="cat1-subcat3">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector1" id="cat1-subcat4">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector1" id="cat1-subcat5">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector1" id="cat1-subcat6">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector1" id="cat1-subcat7">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector1" id="cat1-subcat8">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector1" id="cat1-subcat9">
+              </select>
+            </li>
+          </ul>
+        </div>
+        <div class="col-1-4" id="col2">
+          <div class="inner-row">
+            <span>Level 2</span>
+            <label>Title</label>
+            <input type="text" name="" id="top-cat-title2" value=""/>
+            <select class="cat-selector2" id="cat2">
+            </select>
+          </div>
+          <ul>
+            <li>
+              <select class="cat-selector2" id="cat2-subcat1">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector2" id="cat2-subcat2">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector2" id="cat2-subcat3">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector2" id="cat2-subcat4">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector2" id="cat2-subcat5">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector2" id="cat2-subcat6">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector2" id="cat2-subcat7">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector2" id="cat2-subcat8">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector2" id="cat2-subcat9">
+              </select>
+            </li>
+          </ul>
+        </div>
+        <div class="col-1-4" id="col3">
+          <div class="inner-row">
+            <span>Level 2</span>
+            <label>Title</label>
+            <input type="text" name="" id="top-cat-title3" value=""/>
+            <select class="cat-selector3" id="cat3">
+            </select>
+          </div>
+          <ul>
+            <li>
+              <select class="cat-selector3" id="cat3-subcat1">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector3" id="cat3-subcat2">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector3" id="cat3-subcat3">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector3" id="cat3-subcat4">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector3" id="cat3-subcat5">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector3" id="cat3-subcat6">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector3" id="cat3-subcat7">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector3" id="cat3-subcat8">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector3" id="cat3-subcat9">
+              </select>
+            </li>
+          </ul>
+        </div>
+        <div class="col-1-4" id="col4">
+          <div class="inner-row" id="inner-row4">
+            <span>Right Column | Level 3</span>
+          </div>
+          <ul>
+            <li>
+              <select class="cat-selector4" id="cat4-subcat1">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector4" id="cat4-subcat2">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector4" id="cat4-subcat3">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector4" id="cat4-subcat4">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector4" id="cat4-subcat5">
+              </select>
+            </li>
+            <li>
+              <select class="cat-selector4" id="cat4-subcat6">
+              </select>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

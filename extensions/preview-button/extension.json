@@ -1,0 +1,6 @@
+{
+  "name": "Preview Button",
+  "id": "cf-contentful-ui-preview-button",
+  "fieldTypes": ["Object"],
+  "srcdoc": "./index.html"
+}

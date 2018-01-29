@@ -1,0 +1,6 @@
+{
+  "name": "Menu Editor",
+  "id": "cf-contentful-ui-menu-editor",
+  "fieldTypes": ["Object"],
+  "srcdoc": "./index.html"
+}

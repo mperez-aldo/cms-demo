@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>UI-Extension Preview Button</title>
+    <!-- load Contentful stylesheet to have some base styles -->
+    <link rel="stylesheet" href="https://contentful.github.io/ui-extensions-sdk/cf-extension.css">
+    <!-- load Contentful extensions SDK -->
+    <script src="https://contentful.github.io/ui-extensions-sdk/cf-extension-api.js"></script>
+    <style>
+      .grid{
+        height: 40px;
+        width:100%;
+      }
+      .grid .col-1-2{
+        width: 50%;
+        position:relative;
+        float:left;
+      }
+      #preview-button{
+        font-size: 18px;
+        display: block;
+        position:absolute;
+        top:10px;
+        right:10px;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      /* Local debug */ 
+      const cfExt = window.contentfulExtension || window.contentfulWidget;
+      //Contentful extension logic to retrieve and save the JSON value into the structure
+      window.contentfulExtension.init(extension => {
+        const value = extension.field.getValue();
+        let previewButton = document.getElementById('preview-button'),
+            previewURL = "",
+            categoryURL = "";
+        if(extension.entry.fields.country != undefined && extension.entry.fields.url != undefined){
+          categoryURL = extension.entry.fields.url.getValue();
+          previewURL = "https://dev3.aldoshoes.com/" + extension.entry.fields.country.getValue() + "/en" + categoryURL + "?preview=true";
+        }
+        previewButton.href = previewURL;
+        extension.window.updateHeight();
+        console.log("Updating button link - " + previewURL);
+      });
+    </script>
+    <div class="grid">
+      <a href="javascript:" class="cf-btn-primary" id="preview-button" target="_blank"><span>Preview</span></a>
+    </div>
+
+  </body>
+</html>

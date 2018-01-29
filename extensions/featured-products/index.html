@@ -108,10 +108,12 @@
         .then(function(data) {          
           //clearAvailableProducts(availableProductsArea);
           // Examine the text in the response
-          data.products.forEach(function(product){
-            let productDiv = createdProductElem(product, true);            
-            availableProductsArea.appendChild(productDiv);
-          });          
+          if(data.products && data.products.length > 0){
+            data.products.forEach(function(product){
+              let productDiv = createdProductElem(product, true);            
+              availableProductsArea.appendChild(productDiv);
+            });
+          }
         })
         .then(function(){
           extension.window.updateHeight();
