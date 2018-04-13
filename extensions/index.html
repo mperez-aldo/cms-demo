@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>UI-Extension Categories</title>
+    <!-- load Contentful stylesheet to have some base styles -->
+    <link rel="stylesheet" href="https://contentful.github.io/ui-extensions-sdk/cf-extension.css">
+    <!-- load Contentful extensions SDK -->
+    <script src="https://contentful.github.io/ui-extensions-sdk/cf-extension-api.js"></script>
+    <style>
+      .grid{
+
+      }
+      .grid .col-1-2{
+        width: 50%;
+        position:relative;
+        float:left;
+      }
+      span{
+        width:100%;
+        position:relative;
+        float:left;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      /* Local debug */
+      const cfExt = window.contentfulExtension || window.contentfulWidget;
+
+      /* Finds the parent for a given entry ID recursively */
+      function findParent(spaceObj, entryID){
+        if(entryID){
+          spaceObj.getEntries({ links_to_entry: '' + entryID})
+          .then((response) =>{
+            for(let i=0;i<response.items.length;i++){
+              let item = response.items[i];
+              if(item.sys.contentType.sys.id == "menu"){
+                console.log("Parent level found = " + item.sys.id);
+                return item.sys.id;
+              }else{
+                let itemParent = findParent(spaceObj, item.sys.id);
+                if(itemParent != null){
+                  return itemParent;
+                }
+              }
+            }
+          })
+          .catch((error) => {
+            console.log("Error - " + error);
+            return null;
+          });
+          return null;
+        }
+      }
+      
+
+      //Contentful extension logic to retrieve and save the JSON value into the structure
+      window.contentfulExtension.init(extension => {
+        const value = extension.field.getValue();
+        let categoriesDropDown = document.getElementById('category')
+            entryObj = extension.entry
+            spaceObj = extension.space;
+        
+        console.log("Searching the parent of the entry = " + entryObj.getSys().id);
+        let parentID = findParent(spaceObj,entryObj.getSys().id);
+
+      });
+    </script>
+
+    <div class="grid">
+      <select name="categories" id="category">
+      </select>
+    </div>
+
+  </body>
+</html>

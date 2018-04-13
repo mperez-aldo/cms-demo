@@ -1,0 +1,6 @@
+{
+  "name": "Entry parent",
+  "id": "cf-contentful-ui-parent",
+  "fieldTypes": ["Object"],
+  "srcdoc": "./index.html"
+}
