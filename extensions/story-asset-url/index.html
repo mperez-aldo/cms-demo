@@ -32,20 +32,37 @@
       let defaultValue = "Select a category ID first";
       /* Local debug */ 
       const cfExt = window.contentfulExtension || window.contentfulWidget;
+      /* Finds the parent for a given entry ID recursively */
+      function findParent(spaceObj, entryID){
+        if(entryID){
+          spaceObj.getEntries({ links_to_entry: '' + entryID})
+          .then((response) =>{
+            for(let i=0;i<response.items.length;i++){
+              let item = response.items[i];
+              if(item.sys.contentType.sys.id == "story"){
+                console.log("Parent level found = " + item.sys.id);
+                return item.sys.id;
+              }else{
+                let itemParent = findParent(spaceObj, item.sys.id);
+                if(itemParent != null){
+                  return itemParent;
+                }
+              }
+            }
+          })
+          .catch((error) => {
+            console.log("Error - " + error);
+            return null;
+          });
+          return null;
+        }
+      }
       /* get node parent */
-      function calculateAssetURL(frontAssetURlElem, field, spaceID, nodeID, styleName, colorId){
-        let url = encodeURI("https://preview.contentful.com/spaces/" + spaceID + "/entries/?content_type=story&fields.looks.sys.id=" + nodeID  + "&include=0");
-        const options = {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer 7d82bd27f66a0a17b200c0db70c487aff4ad62827d5ab4a44b1212fb51303f70'
-          }
-        };
-        fetch(url,options)
-        .then((resp) => resp.json())
-        .then(function(data) {
-          let akamaiFolder = data.items[0].fields.akamaiFolderName,
+      function calculateAssetURL(frontAssetURlElem, field, spaceObj, nodeID, styleName, colorId){
+        let parentID = findParent(spaceObj,nodeID);
+        if(parentID){
+          let parentObj = spaceObj.getEntry(parentID);
+          let akamaiFolder = parentObj.fields.akamaiFolderName,
               assetURL = (akamaiFolder + "/web_m_lk_" + styleName.toLowerCase() + colorId + "_[dimension].jpg")
                          .replace(/\/\//g,"/");
           frontAssetURlElem.value = assetURL;
@@ -54,11 +71,7 @@
           };
           console.log("Saving JSON - " + JSON.stringify(frontAssetURL));
           field.setValue(frontAssetURL);
-        })
-        .catch(function(err) {
-          console.log('Fetch Error - ', err);
-          frontAssetURlElem.value = defaultValue;
-        });
+        }
       }
       //Contentful extension logic to retrieve and save the JSON value into the structure
       window.contentfulExtension.init(extension => {
@@ -74,7 +87,7 @@
           let styleName = extension.entry.fields.styleName.getValue(),
               colorId = extension.entry.fields.colorId.getValue(),
               entryMetadata = extension.entry.getSys();
-          calculateAssetURL(frontAssetURlElem,extension.field,entryMetadata.space.sys.id,entryMetadata.id,styleName,colorId);
+          calculateAssetURL(frontAssetURlElem,extension.field,entryMetadata.space,entryMetadata.id,styleName,colorId);
         });
         extension.window.updateHeight();
       });
