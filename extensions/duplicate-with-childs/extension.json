@@ -1,0 +1,7 @@
+{
+  "name": "Duplicate entry as well as its child/nested elements",
+  "id": "cf-contentful-ui-duplicate-with-childs",
+  "fieldTypes": ["Object"],
+  "srcdoc": "./index.html",
+  "sidebar" : true
+}

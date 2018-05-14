@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>UI-Extension Categories</title>
+    <!-- load Contentful stylesheet to have some base styles -->
+    <link rel="stylesheet" href="https://contentful.github.io/ui-extensions-sdk/cf-extension.css">
+    <!-- load Contentful extensions SDK -->
+    <script src="https://contentful.github.io/ui-extensions-sdk/cf-extension-api.js"></script>
+    <style>
+      .grid{
+      }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      /* Duplicates an entry and all its child elements recursively */
+      function duplicateEntry(spaceObj,entryObj,locales){
+
+        return new Promise( (resolve,reject) => {
+          let promises = [];
+          let duplicatedObj = {
+            fields:{}
+          };
+          console.log("Duplicating entry id = " + entryObj.sys.id);
+          spaceObj.getEntry(entryObj.sys.id).then((originalEntry) => {
+            // Loop through the parent entry fields
+            for(fieldID in originalEntry.fields){
+              let fieldObj = originalEntry.fields[fieldID];
+              for(let i=0; i < locales.length; i++){
+                fieldLocale = locales[i];
+                let fieldValue = fieldObj[fieldLocale];
+                if(fieldValue){
+                  // Multiple References/Links to other content types
+                  if(Array.isArray(fieldValue) && fieldValue[0].hasOwnProperty('sys')){                  
+                    console.log("Field = " + fieldID + " array value = " + JSON.stringify(fieldValue) + " locale = " + fieldLocale);
+                    for(let j=0; j < fieldValue.length; j++){
+                      let innerEntryObj = { 
+                        sys: { 
+                          id : fieldValue[j].sys.id
+                        }
+                      }
+                      let innerPromise = new Promise( (innerResolve, innerReject) => {
+                        duplicateEntry(spaceObj,innerEntryObj,locales).then((innerEntry) => {
+                          console.log("inner child - " + JSON.stringify(innerEntry));
+                          let newAttr = {};
+                          newAttr[fieldLocale].sys.id = innerEntry.sys.id;
+                          newAttr[fieldLocale].sys[linkType] = "Entry";
+                          newAttr[fieldLocale].sys.type = "Link";
+                          duplicatedObj.fields[fieldID] = newAttr;
+                          innerResolve(innerEntry);
+                        });
+                      });
+                      promises.push(innerPromise);
+                    }              
+                  }
+                  // Single Reference/Link to other content type
+                  else if(typeof fieldValue === 'object' && fieldValue.hasOwnProperty('sys')){
+                    console.log("Field = " + fieldID + " object value = " + JSON.stringify(fieldValue) + " locale = " + fieldLocale);
+                    let innerPromise = new Promise( (innerResolve, innerReject) => {
+                      duplicateEntry(spaceObj,fieldValue,locales).then((innerEntry) => {
+                        console.log("inner child - " + JSON.stringify(innerEntry));
+                        let newAttr = {};
+                        newAttr[fieldLocale].sys.id = innerEntry.sys.id;
+                        newAttr[fieldLocale].sys[linkType] = "Entry";
+                        newAttr[fieldLocale].sys.type = "Link";
+                        duplicatedObj.fields[fieldID] = newAttr;
+                        innerResolve(innerEntry);
+                      });
+                    });
+                    promises.push(innerPromise);
+                  }
+                  // Simple values
+                  else{ 
+                    console.log("Field = " + fieldID + " value = " + fieldValue + " locale = " + fieldLocale);
+                    let newAttr = {};
+                    newAttr[fieldLocale] = fieldValue;
+                    duplicatedObj.fields[fieldID] = newAttr;
+                  }
+                }
+              }
+            }
+            // Duplicating entry
+            if(promises.length > 0){  
+              Promise.all(promises).then(() => {
+                spaceObj.createEntry(originalEntry.sys.contentType.sys.id,duplicatedObj).then((entry) => {
+                  resolve(entry);
+                })
+              });
+            }else{
+              spaceObj.createEntry(originalEntry.sys.contentType.sys.id,duplicatedObj).then((entry) => {
+                resolve(entry);
+              });
+            }
+          }); //get entry
+        });
+      }
+
+      //Contentful extension logic to retrieve and save the JSON value into the structure
+      window.contentfulExtension.init(extension => {
+        let spaceObj = extension.space,
+            duplicateAction = document.getElementById("duplicateAction"),
+            entryObj = { 
+              sys: { 
+                id : extension.entry.getSys().id
+              }
+            }
+        duplicateAction.addEventListener('click', event => {
+          duplicateEntry(spaceObj,entryObj,extension.locales.available).then((entry) => {
+            console.log("Duplicated entry = " + entry.sys.id);
+          })
+        });
+      });
+    </script>
+
+    <div class="grid">
+      <input type="button" id="duplicateAction" class="cf-btn-primary" value="Duplicate entry"/>
+    </div>
+
+  </body>
+</html>
