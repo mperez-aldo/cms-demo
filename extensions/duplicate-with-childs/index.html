@@ -113,7 +113,6 @@
                     let innerPromise = new Promise( (innerResolve, innerReject) => {
                       duplicateEntry(spaceObj,fieldValue)
                       .then((innerEntry) => {
-                        console.log("inner child - " + JSON.stringify(innerEntry));
                         innerResolve(innerEntry);
                       })
                       .catch((error) => {
