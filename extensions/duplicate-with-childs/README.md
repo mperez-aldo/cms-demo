@@ -1,3 +1,3 @@
-# Parent finder
+# Duplicate entry with childs
 
-Recursive function to find the parent (container) of a given entry
+Recursive function to duplicate an entry and all its child content types or references
