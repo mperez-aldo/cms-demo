@@ -75,9 +75,9 @@
           spaceObj.getEntry(entryObj.sys.id).then((originalEntry) => {
             // Loop through the parent entry fields
             for(fieldID in originalEntry.fields){
-              let fieldObj = originalEntry.fields[fieldID];
-              let fieldLocale;
-              let newAttr = {};
+              let fieldObj = originalEntry.fields[fieldID],
+                  fieldLocale,
+                  newAttr = {};
               for(fieldLocale in fieldObj){
                 // Field locales
                 if(fieldObj.hasOwnProperty(fieldLocale) && fieldObj[fieldLocale]){
