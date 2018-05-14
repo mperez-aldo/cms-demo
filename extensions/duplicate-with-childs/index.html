@@ -14,22 +14,69 @@
   </head>
   <body>
     <script type="text/javascript">
+      /* Links a parent entry with its childs, depending on the relationship type  */
+      function addEntryLinks(duplicatedObj, results, linkArray){
+        let newAttr,childObj,linkItem;
+        for(let i=0; i < results.length; i++){
+          childObj = results[i];
+          linkItem = linkArray[i];
+          // One reference link
+          if(linkItem.type === "Entry"){
+            newAttr = {
+              [linkItem.locale] : {
+                sys:{
+                  id: childObj.sys.id,
+                  linkType : "Entry",
+                  type : "Link"
+                }
+              }
+            }
+            duplicatedObj.fields[linkItem.contentType] = newAttr;
+          }
+          // Multiple reference links
+          if(linkItem.type === "Array"){
+            if( (duplicatedObj.fields[linkItem.contentType] === undefined) || 
+                (duplicatedObj.fields[linkItem.contentType][linkItem.locale] === undefined) ){
+              newAttr = {
+                [linkItem.locale]: [{
+                  sys:{
+                    id: childObj.sys.id,
+                    linkType : "Entry",
+                    type : "Link"
+                  }
+                }]
+              };
+              duplicatedObj.fields[linkItem.contentType] = newAttr;
+            }
+            else{
+              newAttr = {
+                sys:{
+                  id: childObj.sys.id,
+                  linkType : "Entry",
+                  type : "Link"
+                }
+              };
+              duplicatedObj.fields[linkItem.contentType][linkItem.locale].push(newAttr);
+            }
+          }
+        }
+        return duplicatedObj;
+      }
 
       /* Duplicates an entry and all its child elements recursively */
       function duplicateEntry(spaceObj,entryObj){
-
         return new Promise( (resolve,reject) => {
-          let promises = [];
-          let duplicatedObj = {
-            fields:{}
-          };
+          let promises = [], 
+              linkedFields = [],
+              duplicatedObj = {
+                fields:{}
+              };
           console.log("Duplicating entry id = " + entryObj.sys.id);
           spaceObj.getEntry(entryObj.sys.id).then((originalEntry) => {
             // Loop through the parent entry fields
             for(fieldID in originalEntry.fields){
               let fieldObj = originalEntry.fields[fieldID];
-              console.log("Field original value = " + JSON.stringify(fieldObj));
-              var fieldLocale;
+              let fieldLocale;
               let newAttr = {};
               for(fieldLocale in fieldObj){
                 // Field locales
@@ -37,7 +84,6 @@
                   let fieldValue = fieldObj[fieldLocale];
                   // Multiple References/Links to other content types
                   if(Array.isArray(fieldValue) && fieldValue[0].hasOwnProperty('sys')){                  
-                    console.log("Field = " + fieldID + " array value = " + JSON.stringify(fieldValue) + " locale = " + fieldLocale);
                     for(let j=0; j < fieldValue.length; j++){
                       let innerEntryObj = { 
                         sys: { 
@@ -47,11 +93,6 @@
                       let innerPromise = new Promise( (innerResolve, innerReject) => {
                         duplicateEntry(spaceObj,innerEntryObj)
                         .then((innerEntry) => {
-                          console.log("inner child array - " + JSON.stringify(innerEntry));
-                          //newAttr[fieldLocale]["sys"]["id"] = innerEntry.sys.id;
-                          //newAttr[fieldLocale]["sys"]["linkType"] = "Entry";
-                          //newAttr[fieldLocale]["sys"]["type"] = "Link";
-                          //duplicatedObj.fields[fieldID] = newAttr;
                           innerResolve(innerEntry);
                         })
                         .catch((error) => {
@@ -60,19 +101,19 @@
                         });
                       });
                       promises.push(innerPromise);
+                      linkedFields.push({
+                        locale : fieldLocale,
+                        contentType : fieldID,
+                        type: "Array"
+                      });
                     }              
                   }
                   // Single Reference/Link to other content type
                   else if(typeof fieldValue === 'object' && fieldValue.hasOwnProperty('sys')){
-                    console.log("Field = " + fieldID + " object value = " + JSON.stringify(fieldValue) + " locale = " + fieldLocale);
                     let innerPromise = new Promise( (innerResolve, innerReject) => {
                       duplicateEntry(spaceObj,fieldValue)
                       .then((innerEntry) => {
                         console.log("inner child - " + JSON.stringify(innerEntry));
-                        //newAttr[fieldLocale]["sys"]["id"] = innerEntry.sys.id;
-                        //newAttr[fieldLocale]["sys"]["linkType"] = "Entry";
-                        //newAttr[fieldLocale]["sys"]["type"] = "Link";
-                        //duplicatedObj.fields[fieldID] = newAttr;
                         innerResolve(innerEntry);
                       })
                       .catch((error) => {
@@ -81,10 +122,14 @@
                       });
                     });
                     promises.push(innerPromise);
+                    linkedFields.push({
+                      locale : fieldLocale,
+                      contentType : fieldID,
+                      type : "Entry"
+                    });
                   }
                   // Simple values
                   else{ 
-                    console.log("Field = " + fieldID + " value = " + fieldValue + " locale = " + fieldLocale);
                     newAttr[fieldLocale] = fieldValue;
                     duplicatedObj.fields[fieldID] = newAttr;
                   }
@@ -93,8 +138,9 @@
             }
             // Duplicating entry
             if(promises.length > 0){
-              console.log("Creating parent object - " + originalEntry.sys.id + " promises = " + promises.length);
-              Promise.all(promises).then((result) => {
+              Promise.all(promises).then((results) => {
+                duplicatedObj = addEntryLinks(duplicatedObj,results,linkedFields);
+                console.log("Creating complex parent object - " + originalEntry.sys.id + " JSON data = " + JSON.stringify(duplicatedObj));
                 spaceObj.createEntry(originalEntry.sys.contentType.sys.id,duplicatedObj)
                 .then((entry) => {
                   resolve(entry);
